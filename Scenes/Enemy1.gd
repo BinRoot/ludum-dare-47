@@ -21,7 +21,8 @@ func chat(text):
 	get_tree().get_root().add_child(prev_chat_inst)
 
 func _ready():
-	chat(nlg_enemy_spawn[randi() % len(nlg_enemy_spawn)])
+	if randi() % 4 == 0:
+		chat(nlg_enemy_spawn[randi() % len(nlg_enemy_spawn)])
 
 
 func _physics_process(delta):
@@ -35,7 +36,10 @@ func _physics_process(delta):
 				position += (target.global_position - global_position).normalized() * delta * 100
 	else:
 		if target != null:
-			position += (target.global_position - global_position).normalized() * delta * 100
+			var travel_speed = 100
+			if target.global_position.distance_to(global_position) > 300:
+				apply_impulse(Vector2.ZERO, (target.global_position - global_position).normalized() * delta * 50)
+			position += (target.global_position - global_position).normalized() * delta * travel_speed
 			look_at(target.global_position)
 		if target.global_position.distance_to(global_position) < 10:
 			queue_free()
@@ -43,7 +47,8 @@ func _physics_process(delta):
 
 func die():
 	die_timer.start()
-	chat(nlg_enemy_dies[randi() % len(nlg_enemy_dies)])
+	if randi() % 3 == 0:
+		chat(nlg_enemy_dies[randi() % len(nlg_enemy_dies)])
 	
 func glow():
 	sprite.modulate = Color.blue
@@ -55,7 +60,10 @@ func _on_DieTimer_timeout():
 	
 const nlg_enemy_spawn = [
 	"Snake!",
-	"Die serpent!"
+	"Die serpent!",
+	"Give up!",
+	"Fight me...",
+	"Charge!"
 ]
 
 const nlg_enemy_dies = [

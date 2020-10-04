@@ -8,11 +8,11 @@ onready var sprite = $Sprite
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tween.interpolate_property(sprite, "modulate",
-		sprite.modulate, Color.purple, 0.8, 
+		sprite.modulate, Color.orange, 0.8, 
 		Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 	tween.start()
 	tween.interpolate_property(sprite, "scale",
-		sprite.scale, sprite.scale / 3, 2, 
+		sprite.scale * 1, sprite.scale / 3, 2, 
 		Tween.TRANS_CUBIC, Tween.EASE_OUT)
 
 

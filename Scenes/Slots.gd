@@ -47,22 +47,28 @@ func _physics_process(delta):
 	elif level <= LEVEL.level2:
 		slot3.hide()
 	
-	var highlight_color = Color.chartreuse
+	var highlight_color = Color.green
 	
 	if slot_selected == "slot1":
 		slot1_box.modulate = highlight_color
+		slot1_sprite.modulate = Color.white
 	else:
 		slot1_box.modulate = Color.white
+		slot1_sprite.modulate = Color.blue
 		
 	if slot_selected == "slot2":
 		slot2_box.modulate = highlight_color
+		slot2_sprite.modulate = Color.white
 	else:
 		slot2_box.modulate = Color.white
+		slot2_sprite.modulate = Color.blue
 		
 	if slot_selected == "slot3":
 		slot3_box.modulate = highlight_color
+		slot3_sprite.modulate = Color.white
 	else:
 		slot3_box.modulate = Color.white
+		slot3_sprite.modulate = Color.blue
 		
 	for key in slot_states:
 		var shape = slot_states[key]["shape"]
@@ -88,25 +94,38 @@ func _input(event):
 		emit_signal("{0}_update".format([slot_selected]), next_shape)
 		slot_states[slot_selected]["shape"] = next_shape
 	if event.is_action_pressed("ui_up"):
-		var next_shape = Globals.SHAPE.line
-		emit_signal("{0}_update".format([slot_selected]), next_shape)
-		slot_states[slot_selected]["shape"] = next_shape
+		if slot_selected == "slot1" and slot_states[slot_selected]["shape"] == Globals.SHAPE.point:
+			var next_shape = Globals.SHAPE.line
+			emit_signal("{0}_update".format([slot_selected]), next_shape)
+			slot_states[slot_selected]["shape"] = next_shape
+		if slot_selected == "slot1" and level > LEVEL.level1:
+			slot_selected = "slot2"
+		elif slot_selected == "slot2" and level > LEVEL.level2:
+			slot_selected = "slot3"
 	if event.is_action_pressed("ui_down"):
-		var next_shape = Globals.SHAPE.point
-		emit_signal("{0}_update".format([slot_selected]), next_shape)
-		slot_states[slot_selected]["shape"] = next_shape
+		if slot_selected == "slot2":
+			slot_selected = "slot1"
+		elif slot_selected == "slot3":
+			slot_selected = "slot2"
+		elif slot_selected == "slot1":
+			var next_shape = Globals.SHAPE.point
+			emit_signal("{0}_update".format([slot_selected]), next_shape)
+			slot_states[slot_selected]["shape"] = next_shape
 
 
 func _on_Slot1_input_event(viewport, event, shape_idx):
+	return
 	if event is InputEventMouseButton and event.pressed:
 		slot_selected = "slot1"
 
 
 func _on_Slot2_input_event(viewport, event, shape_idx):
+	return
 	if event is InputEventMouseButton and event.pressed:
 		slot_selected = "slot2"
 
 
 func _on_Slot3_input_event(viewport, event, shape_idx):
+	return
 	if event is InputEventMouseButton and event.pressed:
 		slot_selected = "slot3"

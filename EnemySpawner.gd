@@ -27,7 +27,7 @@ func _on_Timer_timeout():
 	if num_spawns < max_spawns:
 		var enemy_inst = enemy_resource.instance()
 		enemy_inst.target = home
+		get_tree().get_root().add_child(enemy_inst)		
 		enemy_inst.global_position = global_position
 		enemy_inst.global_position += Vector2(randi() % 10 - 5, randi() % 10 - 5)
-		get_tree().get_root().add_child(enemy_inst)
 		num_spawns += 1

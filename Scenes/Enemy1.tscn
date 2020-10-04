@@ -68,6 +68,5 @@ position = Vector2( -5.19403, 0 )
 rotation = 1.57079
 scale = Vector2( 1.4, 1.4 )
 frames = SubResource( 11 )
-frame = 2
 playing = true
 [connection signal="timeout" from="DieTimer" to="." method="_on_DieTimer_timeout"]

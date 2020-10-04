@@ -1,9 +1,23 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/Spinner.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/wahwah.wav" type="AudioStream" id=2]
+[ext_resource path="res://Assets/score.wav" type="AudioStream" id=3]
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/Home.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Slots.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Bangers-Regular.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://Assets/whistle.wav" type="AudioStream" id=8]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.415686, 0.658824, 0.364706, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0509804, 0.12549, 0.0588235, 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = ExtResource( 7 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 4 )
@@ -19,6 +33,18 @@ shape = 0
 
 [node name="Home" parent="." instance=ExtResource( 5 )]
 position = Vector2( 490.092, 269.336 )
+
+[node name="Health" type="ProgressBar" parent="Home"]
+margin_left = -50.0
+margin_top = -200.0
+margin_right = 50.0
+margin_bottom = -180.0
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Slots" parent="." instance=ExtResource( 6 )]
 position = Vector2( 438.653, 488.663 )
@@ -62,15 +88,32 @@ __meta__ = {
 }
 
 [node name="EnemyCheckTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 3.0
 one_shot = true
 
 [node name="UI" type="CenterContainer" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Wahwah" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -18.0
+pitch_scale = 1.2
+
+[node name="ScoreSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="GameOverTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="LevelUpSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -9.856
+pitch_scale = 0.16
 [connection signal="body_entered" from="DroppingsArea" to="." method="_on_DroppingsArea_body_entered"]
 [connection signal="slot1_update" from="Slots" to="." method="_on_Slots_slot1_update"]
 [connection signal="slot2_update" from="Slots" to="." method="_on_Slots_slot2_update"]
@@ -79,3 +122,4 @@ __meta__ = {
 [connection signal="button_down" from="DebugButtons/Level2" to="." method="_on_Level2_button_down"]
 [connection signal="button_down" from="DebugButtons/Level3" to="." method="_on_Level3_button_down"]
 [connection signal="timeout" from="EnemyCheckTimer" to="." method="_on_EnemyCheckTimer_timeout"]
+[connection signal="timeout" from="GameOverTimer" to="." method="_on_GameOverTimer_timeout"]

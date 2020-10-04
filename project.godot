@@ -23,6 +23,10 @@ config/icon="res://icon.png"
 
 Globals="*res://Scripts/Globals.gd"
 
+[display]
+
+window/size/resizable=false
+
 [input]
 
 slot1={
@@ -43,5 +47,5 @@ slot3={
 
 [rendering]
 
-environment/default_clear_color=Color( 0.803922, 0.490196, 0, 1 )
+environment/default_clear_color=Color( 0.301961, 0.301961, 0.301961, 1 )
 environment/default_environment="res://default_env.tres"

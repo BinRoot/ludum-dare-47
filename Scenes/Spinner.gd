@@ -12,6 +12,7 @@ onready var node_sprite = $Node/AnimatedSprite
 onready var dropping_timer = $DroppingTimer
 onready var tween = $Tween
 onready var cross_sprite = $Cross
+onready var hit_sound = $HitSound
 
 var is_selected : bool = false
 
@@ -58,6 +59,7 @@ func _physics_process(delta):
 		
 	if shape == SHAPE.point:
 		node_sprite.rotation_degrees = 90
+		node_sprite.speed_scale = 0.1
 		if not tween.is_active():
 			tween.interpolate_property(node, "position",
 				node.position, Vector2(0, 0), 0.1,
@@ -65,10 +67,11 @@ func _physics_process(delta):
 			tween.start()
 			yield(tween, "tween_completed")
 	elif shape == SHAPE.line:
+		node_sprite.speed_scale = 0.5
 		node_sprite.rotation_degrees = 90
 		if not tween.is_active():
 			var node_target# = Vector2(0, 0)
-			var duration = 0.5
+			var duration = 0.2
 			#if node.position.length() < 10:
 			node_target = Vector2(size1, 0)
 			duration = 0.1
@@ -78,6 +81,7 @@ func _physics_process(delta):
 			tween.start()
 			yield(tween, "tween_completed")
 	elif shape == SHAPE.circle_cw:
+		node_sprite.speed_scale = 1
 		node_sprite.rotation_degrees = 180
 		rotate(speed1 * delta)
 		if not tween.is_active():
@@ -87,6 +91,7 @@ func _physics_process(delta):
 			tween.start()
 			yield(tween, "tween_completed")
 	elif shape == SHAPE.circle_ccw:
+		node_sprite.speed_scale = 1
 		node_sprite.rotation_degrees = 0
 		rotate(-speed1 * delta)
 		if not tween.is_active():
@@ -101,8 +106,11 @@ func _on_Node_area_entered(area):
 	if area.get_parent().is_in_group("enemy"):
 		var enemy_body : RigidBody2D = area.get_parent()
 		if not enemy_body.is_glowing:
-			var direction = (area.global_position - global_position).normalized() * 300
+			var direction = (
+				(area.global_position - global_position).normalized()
+			) * 400
 			enemy_body.apply_impulse(Vector2.ZERO, direction)
+			hit_sound.play()
 			enemy_body.die()
 
 
