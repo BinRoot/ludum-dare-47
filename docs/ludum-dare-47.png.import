@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ludum-dare-47.png-363f8e41614ebaf5f47971e95e11a162.stex"
+path="res://.import/ludum-dare-47.png-800e888f77fc97d37b9e5dbd8bfeefa3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://web/ludum-dare-47.png"
-dest_files=[ "res://.import/ludum-dare-47.png-363f8e41614ebaf5f47971e95e11a162.stex" ]
+source_file="res://docs/ludum-dare-47.png"
+dest_files=[ "res://.import/ludum-dare-47.png-800e888f77fc97d37b9e5dbd8bfeefa3.stex" ]
 
 [params]
 
