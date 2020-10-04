@@ -2,7 +2,7 @@ extends RigidBody2D
 
 
 onready var die_timer = $DieTimer
-onready var sprite = $Sprite
+onready var sprite = $AnimatedSprite
 
 onready var chat_bubble = preload("res://Scenes/ChatBubble.tscn")
 
@@ -26,6 +26,7 @@ func _ready():
 
 func _physics_process(delta):
 	if is_glowing:
+		sprite.speed_scale = 0.2
 		glow_direction = (global_position - target.global_position).normalized()
 		look_at(global_position + glow_direction)
 		if target != null:

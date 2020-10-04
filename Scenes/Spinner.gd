@@ -8,7 +8,7 @@ export var shape : int = SHAPE.circle_cw
 export var is_enemy : bool = false
 
 onready var node = $Node
-onready var node_sprite = $Node/Sprite
+onready var node_sprite = $Node/AnimatedSprite
 onready var dropping_timer = $DroppingTimer
 onready var tween = $Tween
 onready var cross_sprite = $Cross
@@ -57,6 +57,7 @@ func _physics_process(delta):
 		dropping_timer.stop()
 		
 	if shape == SHAPE.point:
+		node_sprite.rotation_degrees = 90
 		if not tween.is_active():
 			tween.interpolate_property(node, "position",
 				node.position, Vector2(0, 0), 0.1,
@@ -64,18 +65,20 @@ func _physics_process(delta):
 			tween.start()
 			yield(tween, "tween_completed")
 	elif shape == SHAPE.line:
+		node_sprite.rotation_degrees = 90
 		if not tween.is_active():
-			var node_target = Vector2(0, 0)
+			var node_target# = Vector2(0, 0)
 			var duration = 0.5
-			if node.position.length() < 10:
-				node_target = Vector2(size1, 0)
-				duration = 0.1
+			#if node.position.length() < 10:
+			node_target = Vector2(size1, 0)
+			duration = 0.1
 			tween.interpolate_property(node, "position",
 			node.position, node_target, duration,
 			Tween.TRANS_LINEAR, Tween.EASE_OUT)
 			tween.start()
 			yield(tween, "tween_completed")
 	elif shape == SHAPE.circle_cw:
+		node_sprite.rotation_degrees = 180
 		rotate(speed1 * delta)
 		if not tween.is_active():
 			tween.interpolate_property(node, "position",
@@ -84,6 +87,7 @@ func _physics_process(delta):
 			tween.start()
 			yield(tween, "tween_completed")
 	elif shape == SHAPE.circle_ccw:
+		node_sprite.rotation_degrees = 0
 		rotate(-speed1 * delta)
 		if not tween.is_active():
 			tween.interpolate_property(node, "position",
@@ -100,7 +104,6 @@ func _on_Node_area_entered(area):
 			var direction = (area.global_position - global_position).normalized() * 300
 			enemy_body.apply_impulse(Vector2.ZERO, direction)
 			enemy_body.die()
-
 
 
 func _on_DroppingTimer_timeout():

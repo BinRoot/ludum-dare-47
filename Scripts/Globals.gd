@@ -1,6 +1,6 @@
 extends Node
 
-enum LEVEL { level1, level2, level3 }
+enum LEVEL { level1, level2, level3, level4 }
 
 enum SHAPE { point, circle_cw, line, circle_ccw }
 

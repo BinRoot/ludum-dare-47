@@ -1,8 +1,8 @@
 extends Node2D
 
 
-export var max_spawns : int = 20
-export var spawn_delay : float = 0.1
+export var max_spawns : int = 100
+export var spawn_delay : float = 0.5
 
 func _ready():
 	$EnemySpawner.max_spawns = max_spawns

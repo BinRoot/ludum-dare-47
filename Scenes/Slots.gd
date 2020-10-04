@@ -41,10 +41,10 @@ func _physics_process(delta):
 	slot1.show()
 	slot2.show()
 	slot3.show()
-	if level == LEVEL.level1:
+	if level <= LEVEL.level1:
 		slot2.hide()
 		slot3.hide()
-	elif level == LEVEL.level2:
+	elif level <= LEVEL.level2:
 		slot3.hide()
 	
 	var highlight_color = Color.chartreuse
@@ -74,9 +74,9 @@ func _physics_process(delta):
 func _input(event):
 	if event.is_action_pressed("slot1"):
 		slot_selected = "slot1"
-	if event.is_action_pressed("slot2") and level != LEVEL.level1:
+	if event.is_action_pressed("slot2") and level >= LEVEL.level2:
 		slot_selected = "slot2"
-	if event.is_action_pressed("slot3") and level == LEVEL.level3:
+	if event.is_action_pressed("slot3") and level >= LEVEL.level3:
 		slot_selected = "slot3"
 	
 	if event.is_action_pressed("ui_left"):

@@ -145,6 +145,20 @@ func prepare_level3():
 	home.add_child(spawner)
 	level = LEVEL.level3
 	
+func prepare_level4():
+	show_level_text("Level 4!")
+	kill_all_spawners()
+	var spawner = spawner_res3.instance()
+	var spawner2 = spawner_res3.instance()
+	home.add_child(spawner)
+	spawner.position.x -= 100
+	home.add_child(spawner2)
+	spawner2.position.x += 100
+	level = LEVEL.level4
+	
+func you_win():
+	show_level_text("You Win!")
+	kill_all_spawners()
 
 func _on_EnemyCheckTimer_timeout():
 	if enemy_indicator == 0:
@@ -152,4 +166,8 @@ func _on_EnemyCheckTimer_timeout():
 			prepare_level2()
 		elif level == LEVEL.level2:
 			prepare_level3()
+		elif level == LEVEL.level3:
+			prepare_level4()
+		elif level == LEVEL.level4:
+			you_win()
 		enemy_indicator = 0

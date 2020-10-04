@@ -13,5 +13,3 @@ child_path = NodePath("../EnemySpawner")
 is_enemy = true
 
 [node name="EnemySpawner" parent="." instance=ExtResource( 2 )]
-max_spawns = 20
-spawn_delay = 0.1

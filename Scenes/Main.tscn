@@ -11,6 +11,7 @@ script = ExtResource( 4 )
 [node name="Spinner" parent="." instance=ExtResource( 1 )]
 position = Vector2( 491.798, 272.984 )
 rotation = 4297.67
+shape = 0
 
 [node name="DroppingsArea" type="Area2D" parent="."]
 
@@ -23,9 +24,11 @@ position = Vector2( 490.092, 269.336 )
 position = Vector2( 438.653, 488.663 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
 color = Color( 0.427451, 0.109804, 0.807843, 0.356863 )
 
 [node name="DebugButtons" type="VBoxContainer" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
