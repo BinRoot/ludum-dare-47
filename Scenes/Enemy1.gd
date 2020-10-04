@@ -1,19 +1,27 @@
 extends RigidBody2D
 
 
-export var target_node : NodePath = ""
-
 onready var die_timer = $DieTimer
 onready var sprite = $Sprite
 
+onready var chat_bubble = preload("res://Scenes/ChatBubble.tscn")
 
 var is_glowing = false
 var target
 var glow_direction : Vector2 = Vector2(0, 0)
 
+var prev_chat_inst = null
+
+func chat(text):
+	if prev_chat_inst != null and is_instance_valid(prev_chat_inst):
+		return
+	prev_chat_inst = chat_bubble.instance()
+	prev_chat_inst.text = text
+	prev_chat_inst.follow = self
+	get_tree().get_root().add_child(prev_chat_inst)
+
 func _ready():
-	if target_node != "":
-		target = get_node(target_node)
+	chat(nlg_enemy_spawn[randi() % len(nlg_enemy_spawn)])
 
 
 func _physics_process(delta):
@@ -31,15 +39,26 @@ func _physics_process(delta):
 		if target.global_position.distance_to(global_position) < 10:
 			queue_free()
 	
-		
+
 func die():
 	die_timer.start()
+	chat(nlg_enemy_dies[randi() % len(nlg_enemy_dies)])
 	
 func glow():
 	sprite.modulate = Color.blue
 	is_glowing = true
 	die_timer.stop()
-	
 
 func _on_DieTimer_timeout():
 	queue_free()
+	
+const nlg_enemy_spawn = [
+	"Snake!",
+	"Die serpent!"
+]
+
+const nlg_enemy_dies = [
+	"Awkk!",
+	"Ooogh!",
+	"Ahh!"
+]

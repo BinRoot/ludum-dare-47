@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/SpinningEnemySpawner.tscn" type="PackedScene" id=1]
+
+[node name="DoubleSpinningEnemySpawner" type="Node2D"]
+
+[node name="SpinningEnemySpawner" parent="." instance=ExtResource( 1 )]
+position = Vector2( -50, 37 )
+max_spawns = 400
+spawn_delay = 0.02
+
+[node name="SpinningEnemySpawner2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 37 )
+max_spawns = 400
+spawn_delay = 0.02
+
+[node name="SpinningEnemySpawner3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -47.1517 )
+max_spawns = 400
+spawn_delay = 0.02

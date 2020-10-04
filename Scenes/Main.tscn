@@ -1,8 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Spinner.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/EnemySpawner.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Enemy1.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/Home.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Slots.tscn" type="PackedScene" id=6]
@@ -13,21 +11,6 @@ script = ExtResource( 4 )
 [node name="Spinner" parent="." instance=ExtResource( 1 )]
 position = Vector2( 491.798, 272.984 )
 rotation = 4297.67
-
-[node name="EnemySpawner" parent="." instance=ExtResource( 2 )]
-position = Vector2( 658.791, 189.617 )
-enemy_resource = ExtResource( 3 )
-target_node = NodePath("../Spinner")
-
-[node name="EnemySpawner2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 742.139, 97.413 )
-enemy_resource = ExtResource( 3 )
-target_node = NodePath("../Spinner")
-
-[node name="EnemySpawner3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 810.171, 30.8327 )
-enemy_resource = ExtResource( 3 )
-target_node = NodePath("../Spinner")
 
 [node name="DroppingsArea" type="Area2D" parent="."]
 
@@ -41,7 +24,55 @@ position = Vector2( 438.653, 488.663 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 color = Color( 0.427451, 0.109804, 0.807843, 0.356863 )
+
+[node name="DebugButtons" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level1" type="Button" parent="DebugButtons"]
+margin_right = 55.0
+margin_bottom = 20.0
+text = "level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level2" type="Button" parent="DebugButtons"]
+margin_top = 24.0
+margin_right = 55.0
+margin_bottom = 44.0
+text = "level 2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level3" type="Button" parent="DebugButtons"]
+margin_top = 48.0
+margin_right = 55.0
+margin_bottom = 68.0
+text = "level 3"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnemyCheckTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="UI" type="CenterContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="body_entered" from="DroppingsArea" to="." method="_on_DroppingsArea_body_entered"]
 [connection signal="slot1_update" from="Slots" to="." method="_on_Slots_slot1_update"]
 [connection signal="slot2_update" from="Slots" to="." method="_on_Slots_slot2_update"]
 [connection signal="slot3_update" from="Slots" to="." method="_on_Slots_slot3_update"]
+[connection signal="button_down" from="DebugButtons/Level1" to="." method="_on_Level1_button_down"]
+[connection signal="button_down" from="DebugButtons/Level2" to="." method="_on_Level2_button_down"]
+[connection signal="button_down" from="DebugButtons/Level3" to="." method="_on_Level3_button_down"]
+[connection signal="timeout" from="EnemyCheckTimer" to="." method="_on_EnemyCheckTimer_timeout"]

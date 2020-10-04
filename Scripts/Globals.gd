@@ -1,6 +1,8 @@
 extends Node
 
-enum SHAPE { point, circle_cw, line, circle_ccw, }
+enum LEVEL { level1, level2, level3 }
+
+enum SHAPE { point, circle_cw, line, circle_ccw }
 
 var shape_sprites = {
 	SHAPE.circle_cw: preload("res://Assets/circle_cw.png"),

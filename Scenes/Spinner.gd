@@ -4,11 +4,16 @@ var SHAPE = Globals.SHAPE
 export var size1 : int = 100
 export var speed1 : int = 1
 export var child_path : NodePath = ""
-export(Globals.SHAPE) var shape = SHAPE.circle_cw
+export var shape : int = SHAPE.circle_cw
+export var is_enemy : bool = false
 
 onready var node = $Node
 onready var node_sprite = $Node/Sprite
 onready var dropping_timer = $DroppingTimer
+onready var tween = $Tween
+onready var cross_sprite = $Cross
+
+var is_selected : bool = false
 
 var child_path_prefix = "."
 var time = 0
@@ -16,16 +21,20 @@ var child_inst = null
 
 var dropping_scene = preload("res://Scenes/Dropping.tscn")
 
+var prev_dropping_pos : Vector2 = Vector2.ZERO
+
 
 func _ready():
 	if child_path != "":
 		node_sprite.visible = false
 		var child_inst_original = get_node("{0}/{1}".format([child_path_prefix, child_path]))
 		child_inst = child_inst_original.duplicate()
-		child_inst.child_path_prefix = "../../{0}".format([child_path_prefix])
+		if child_inst.get("child_path_prefix"):
+			child_inst.child_path_prefix = "../../{0}".format([child_path_prefix])
 		child_inst_original.queue_free()
 		node.monitoring = false
 		node.add_child(child_inst)
+	
 
 func attach_child(child):
 	node_sprite.visible = false
@@ -35,21 +44,53 @@ func attach_child(child):
 	child_inst = child
 
 func _physics_process(delta):
-	if child_inst == null:
+	if is_enemy:
+		cross_sprite.visible = false
+	if is_selected and not is_enemy:
+		cross_sprite.modulate = Color.yellow
+	else:
+		cross_sprite.modulate = Color.white
+	if child_inst == null and not is_enemy:
 		if dropping_timer.is_stopped():
 			dropping_timer.start()
 	else:
 		dropping_timer.stop()
+		
 	if shape == SHAPE.point:
-		node.position.x = size1
-	elif shape == SHAPE.circle_cw:
-		node.position.x = size1
-		rotate(speed1 * delta)
+		if not tween.is_active():
+			tween.interpolate_property(node, "position",
+				node.position, Vector2(0, 0), 0.1,
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+			yield(tween, "tween_completed")
 	elif shape == SHAPE.line:
-		node.position.x = size1 * sin(time * delta)
+		if not tween.is_active():
+			var node_target = Vector2(0, 0)
+			var duration = 0.5
+			if node.position.length() < 10:
+				node_target = Vector2(size1, 0)
+				duration = 0.1
+			tween.interpolate_property(node, "position",
+			node.position, node_target, duration,
+			Tween.TRANS_LINEAR, Tween.EASE_OUT)
+			tween.start()
+			yield(tween, "tween_completed")
+	elif shape == SHAPE.circle_cw:
+		rotate(speed1 * delta)
+		if not tween.is_active():
+			tween.interpolate_property(node, "position",
+				node.position, Vector2(size1, 0), 0.1,
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+			yield(tween, "tween_completed")
 	elif shape == SHAPE.circle_ccw:
-		node.position.x = size1	
 		rotate(-speed1 * delta)
+		if not tween.is_active():
+			tween.interpolate_property(node, "position",
+				node.position, Vector2(size1, 0), 0.1,
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+			yield(tween, "tween_completed")
 	time = time + 1
 
 func _on_Node_area_entered(area):
@@ -62,9 +103,9 @@ func _on_Node_area_entered(area):
 
 
 
-
-
 func _on_DroppingTimer_timeout():
-	var dropping_inst = dropping_scene.instance()
-	dropping_inst.global_position = node.global_position + Vector2(randi()%10 - 5, randi()%10 - 5)
-	get_tree().root.add_child(dropping_inst)
+	if prev_dropping_pos.distance_to(node.global_position) > 1:
+		var dropping_inst = dropping_scene.instance()
+		dropping_inst.global_position = node.global_position
+		get_tree().root.add_child(dropping_inst)
+		prev_dropping_pos = dropping_inst.global_position		
